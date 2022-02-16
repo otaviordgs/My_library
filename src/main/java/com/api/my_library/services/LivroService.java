@@ -32,4 +32,12 @@ public class LivroService {
     public Optional<Livro> findById(Long id) {
         return livrosRepository.findById(id);
     }
+
+    public List<Livro> getLivroByAutor(String autor) {
+        return livrosRepository.findByAutorContaining(autor);
+    }
+
+    public List<Livro> getLivrosByNumberOfPages(int paginas) {
+        return livrosRepository.FindByNumberOfPages(paginas);
+    }
 }

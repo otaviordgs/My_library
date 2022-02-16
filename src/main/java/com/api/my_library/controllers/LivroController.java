@@ -4,12 +4,15 @@ import com.api.my_library.dtos.LivroDto;
 import com.api.my_library.models.Livro;
 import com.api.my_library.services.LivroService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +35,22 @@ public class LivroController {
         if(livroOptional.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("O id não foi encontrado!");
         return ResponseEntity.status(HttpStatus.OK).body(livroOptional.get());
+    }
+
+    @GetMapping("/paginas")
+    public ResponseEntity<Object> getLivrosByNumberOfPages(@Param("numero") int paginas){
+        List<Livro> livroAutor = livroService.getLivrosByNumberOfPages(paginas);
+        if(livroAutor.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum livro escrito por esse autor foi encontrado");
+        return ResponseEntity.status(HttpStatus.FOUND).body(livroAutor);
+    }
+
+    @GetMapping("/por/{autor}")
+    public ResponseEntity<Object> getLivrosAutor(@PathVariable String autor){
+        List<Livro> livroAutor = livroService.getLivroByAutor(autor);
+        if(livroAutor.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum livro escrito por esse autor foi encontrado");
+        return ResponseEntity.status(HttpStatus.FOUND).body(livroAutor);
     }
 
     @PostMapping

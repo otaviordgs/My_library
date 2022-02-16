@@ -1,6 +1,7 @@
 package com.api.my_library.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "livros")
@@ -71,5 +72,18 @@ public class Livro {
 
     public void setNota(Double nota) {
         this.nota = nota;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Livro livro = (Livro) o;
+        return Objects.equals(id, livro.id) && Objects.equals(nome, livro.nome) && Objects.equals(autor, livro.autor) && Objects.equals(paginas, livro.paginas) && Objects.equals(comentario, livro.comentario) && Objects.equals(nota, livro.nota);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, autor, paginas, comentario, nota);
     }
 }
